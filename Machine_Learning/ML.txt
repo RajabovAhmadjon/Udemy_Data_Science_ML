@@ -1,0 +1,138 @@
+Supervised Learning
+Algorithms are trained using labeled examples, such as an input where the desired output is known. For example, a segment of text  could have a category label, such as:
+Spam vs Legitimate(Законный) Email
+Positive vs Negative Moive Review
+The network receives a set of inputs along with the corresponding correct outputs, and the algorithm learns by comparing its actual output with correct outputs to find errors. It then modifies the model accordingly.
+Supervised learning is commonly used in applications where historical data predicts likely future events.
+
+Steps:
+1. Data Acquisition: Get your data! Customers, Sensors etc...
+2. Data Clening: Clean and format your data (using Pandas)
+3. Then split the data into Traning Data(~70%) and Test Data(~30%)
+4. Traning Data: Model Traning & Building(specific traning set is fit a model)
+5. Model Testing: Model Performance(run test data through model and compare the models prediction to actual correct label that test data had)
+6. Adjust Model Parameters: if desired to go back off that performance and adjust the model parameters, e.g. add more layers or more neurons to try get better fit onto that test data
+
+This is a simplified approach to supervised learning. In real projects data often split into 3 sets:
+1. Traning Data: Used to train model parameters
+2. Validation Data: Used to determine what model hyperparameters to adjust
+3. Test Data: Used to get some final performance metric
+
+Evaluating Performance - Classification Error Metrics
+Typically in any classification task your model can only achieve two results:
+1. Either your model was correct in its prediction
+2. Or model was incorrect in its prediction
+Fortunately, incorrect vs correct exoands to situations where you have multiple classes. Imagine a binary classification situation, where there are only two avaliable classes: class zeros and class ones
+For example: attempt to predict if an image is a dog or a cat. Since this is supervised learning, first fit/train a model on training data, then test the model on testing data. Once there are model's predictions from X_test data, compare it to the true y values(the correct labels).
+In the real world, not all incorect or correct matches hold equal value! Also, a single metric won't tell the complete story! Organize predicted values compared to the real values in a confusion matrix.
+
+Metrics:
+1. Accuracy: in classification problems is the number of correct predictions made by the model divided by the total number of predictions. For example: X_test was 100 images and model correctly predicted 80 images, then we have 80/100 = 0.8, 80& accuracy.
+Accuracy is useful when target classes are well balanced. If 99 images are dogs and 1 image a cat model will predict always dog and accuracy will be 99%, so accuracy is bad choice with unbalanced classes. In this situation better use recall or precision.
+2. Recall: ability of a model to find all the relevant cases within a dataset. The precise definition of recall is the number of true positives divided by the number of true positives plus the number of false negatives. 
+3. Precision: ability of a classification model to identify only the relevant data points. Defined as the number of true positives divided by the number of true positives plus the number of false positives.
+
+Recall and Precision: often you have a trade-off between Recall and Precision. While recall expresses the ability to find all relevant instances in a dataset, precision expresses the proportion of data points our model says was relevant actually were relevant.
+
+4. F1-Score: where we want to find an optimal blend of precision and recall we can combine the two metrics using what is called the F1 score. The F1-Score is the harmonic mean of precision and recall taking both metrics into account in the following equation: 
+F1 = 2 * (precision * recall) / (precision + recall)
+Use the harmonic mean instead of a simple average because it punishes extreme values. A classifier with a precision of 1.0 and a recall of 0.0 has a simple average of 0.5 but an F1-Score of 0.
+
+Evaluating Performance - Regression Error Metrics
+Regression is a task when a model attempts to predict continous values(unlike categorical values, which is calssification). Accuracy and Recall sort of metrics aren't useful for regression problems, need metrics designed for continous values.
+For example: attempting to predict the price of a house given its features is a regression task. Attempting to predict the country a house is in given its features would be a classification task.
+
+Metrics:
+1. Mean Absolute Error (MAE). Compare your predictions and remember or comparing a continous value here. Since this is a regression task, we're going to compare our predictions to the true y label. For example: compare the actual prediction of the house price with the true house price. And just take the difference between the true price minus our predicted price. Sicne we want to average this out across all our predictions, we take the absolute value. MAE won't punish large errors.
+2. Mean Squared Error (MSE). Difference between the true value minus our predictive value, and we're going to square it. And when we actually take that square, the larger errors are noted more than with mean absolute error, which makes mean squared error more popular because you're really going to punish your model for those outlier situations that it's not fitting to. However, another issue that we run into with mean squared error that's squaring of the actual label, minus her prediction actually also squares the units themselves. So, for example, if you're predicting the price of a house, then our error metric would mean absolute error would be in dollars, but with means squared error, we end up getting an error metric in units of dollars squared, which is difficult to interpret. 
+3. Root Mean Square Error (RMSE). Most popular, it does both punish those larger error values and it has the same metrics or same units as Y. A RMSE of 10$ is fantastic for predicting the price of a house(compare to average of house price which is huge), but horrible for predicting the price of a candy bar. Compare your error metric to the average value of the label in your data set to try to get an intuition of its overall performance. Domain knowledge also plays an important role here.
+
+
+sci-kit learn algorithm cheat sheet
+
+Bias Variance Trade off - model’s performance
+The bias-variance trade off is the point where we are adding just noise by adding model complexity (flexibility). The training error goes down as it has to, but the test error is starting to go up. The model after the bias trade-off begins to overfit. 
+
+Logistic Regression
+As methods for Classification. Examples of binary classification problem: Spam vs “Ham” emails; Loan Default (yes/no); Disease Diagnosis. Logistic regression trying to predict discrete categories.  Logistic regression goes between 0 and 1. The Sigmoid (aka Logistic) function takes in any value and outputs it to be between 0 and 1. Sigmoid logistic function is a key to understanding using logistic regression to perform classification. Taking the Linear Regression solution and placing it into the Sigmoid function we get Logistic Regression. Can be used as a confusion matrix to evaluate logistic regression classification models.
+
+KNN - K Nearest Neighbors
+Is a classification algorithm that operates on a very simple principle. 
+Training Algorithm: Store all the Data
+Prediction Algorithm:
+1. Calculate the distance from x to all points in your data
+2. Sort the points in your data by increasing distance from x
+3. Predict the majority label of the “k” closest points
+
+Pros:
+- Very simple
+- Training is trivial
+- Works with any number of classes
+- Easy to add more data
+- Few parameters: K and Distance Metric
+
+Cons:
+- High Prediction Cost (worse for large data sets)
+- Not good with high dimensional data
+- Categorical Features don’t work well
+
+A common interview task for a data scientist position is to be given anonymized data and attempt to classify it, without knowing the context of the data.
+
+Standard Scaler
+The idea behind StandardScaler is that it will transform your data such that its distribution will have a mean value 0 and standard deviation of 1. In case of multivariate data, this is done feature-wise (in other words independently for each column of the data). Given the distribution of the data, each value in the dataset will have the mean value subtracted, and then divided by the standard deviation of the whole dataset (or feature in the multivariate case).
+
+Normalization 
+The goal of normalization is to transform features to be on a similar scale. This improves the performance and training stability of the model.
+
+
+Three Methods: Decision Tree and Random Forest
+- Nodes: split for the value of a certain attribute
+- Edges: Outcome of a split to next node
+
+Entropy and Information Gain are the mathematical methods of choosing the best split of a tree.
+- Entropy is used as a way to measure how “mixed” a column is. Specifically, entropy is used to measure disorder.
+- Information Gain equal to how much Entropy we removed. The quality of the split by weighting the entropy of each branch by how many elements it has. 
+
+Support Vector Machines (SVM)
+SVM are supervised learning models with associated learning algorithms that analyze data and recognize patterns, used for classification and regression analysis. Given a set of training examples, each marked for belonging to one of two categories, and SVM training algorithm builds a model that assigns new examples into one category or the other, making it a non-probabilistic binary linear classifier. An SVM model is a representation of the example as points in space, mapped so that the examples of the separate categories are divided by a clear gap that is as wide as possible. New examples are then mapped into that same space and predicted to belong to a category based on which side the gap they fall on. 
+
+K Means Algorithm
+Is an unsupervised learning algorithm that will attempt to group similar clusters together in your data. Typical clustering problem look:
+- Cluster Similar Documents
+- Cluster Customers based on Features
+- Market Segmentation
+- Identify similar physical groups
+The overall goal is to divide data into distinct groups such that observations within each group are similar. K Means used to try to find labels in data not to predict.
+
+The K Means Algorithm: 
+- Choose a number of Clusters “K”
+- Randomly assign each point to a cluster 
+- Until clusters stop changing, repeat the following: 
+For each cluster, compute the cluster centroid(центр тяжести) by taking the mean vector of points in the cluster
+Assign each data point to the cluster for which the centroid is the closest
+- There is no easy answer for choosing a “best” K value 
+- One way is the elbow method
+First of all, compute the sum of squared error (SSE) for some values of K (for example, 2,4,6,8, etc.).
+The SSE is defined as the sum of the squared distance between each member of the cluster and its centroid.
+
+If you plot k against the SSE, you will see that the error decreases as k gets larger; this is because when the number of clusters increases, they should be smaller, so distortion is also smaller. The idea of the elbow method is to choose the k at which the SSE decreases abruptly(внезапно), this produces an “elbow effect”. 
+
+
+Principal Component Analysis
+It’s an unsupervised statistical technique used to examine the interrelations among a set of variables in order to identify the underlying structure of those variables. It is also known sometimes as a general factor analysis.
+Where regression determines a line of best fit to a data set, factor analysis determines several orthogonal lines of best fit to the data set. Orthogonal means “at right angles”. Actually the lines are perpendicular to each other in n-dimensional space. n-Dimensional Space is the variable sample space. There are as many dimensions as there are variables, so in a data set with 4 variables the sample space is 4-dimensional. 
+If we use the techniques on a data set with a large number of variables, we can compress the amount of explained variation to just a few components. The most challenging part of PCA is interpreting the components. 
+Recommender Systems
+The most common types of recommender systems are Content-Based and Collaborative Filtering (CF). 
+Collaborative filtering produces recommendations based on the knowledge of users’ attitude to items, that is it uses the “wisdom of the crowd” to recommend items.
+Content-based recommender systems focus on the attributes of the items and give you recommendations based on the similarity between them.
+In general, Collaborative Filtering (CF) is more commonly used than content-based systems because it usually gives better results and is relatively easy to understand (from an overall implementation perspective). The algorithm has the ability to do feature learning on its own, which means that it can start to learn for itself what features to use.
+
+Collaborative Filtering (CF) can be divided into Memory-Based Collaborative Filtering and Model-Based Collaborative Filtering. 
+
+Natural Language Processing (NLP)
+A document represented as a vector of word counts is called a “Bag of Words”. Cosine similarity on the vectors made to determine similarity. We can improve on Bag of Words by adjusting word counts based on their frequency in the corpus(the group of all the documents), TF-IDF (Term Frequency - Inverse Document Frequency). Term Frequency - Importance of the term within that document, TF(d,t) = Number of occurrences of the term in document d. Inverse Document Frequency - Importance of the term in the corpus, IDF(t) = log(D/t), where D = total number of documents, t = number of documents with the term.
+
+TF and Keras
+Early Stopping - Keras can automatically stop training based on loss condition on the validation data passed during the model.fit() call.
+Dropout Layers - dropout can be added to layers to “turn off” neurons during training to prevent overfitting. 
